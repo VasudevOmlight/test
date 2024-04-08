@@ -41,7 +41,7 @@ public class TextDecryptor {
                 writer.write(line);
                 writer.newLine(); // Write newline after each line
             }
-            System.out.println("File decrypted");
+            System.out.println("Файл розшифровано");
         } catch (IOException e) {
             e.printStackTrace();
         }

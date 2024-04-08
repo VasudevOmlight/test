@@ -1,0 +1,33 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
+public class PrepareEncryption {
+    public String readTextFromFile(String filePath) {
+        StringBuilder textBuilder = new StringBuilder();
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                textBuilder.append(line).append(System.lineSeparator());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        //System.out.println(textBuilder);
+        return textBuilder.toString();
+    }
+
+    public String readAlphabetFromFile(String filePath) {
+        StringBuilder alphabetBuilder = new StringBuilder();
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            int charCode;
+            while ((charCode = reader.read()) != -1) {
+                char character = (char) charCode;
+                alphabetBuilder.append(character);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return alphabetBuilder.toString();
+    }
+}

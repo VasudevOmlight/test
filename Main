@@ -1,0 +1,37 @@
+import java.util.Scanner;
+import java.util.List;
+
+public class Main {
+    public static void main(String[] args) {
+        // Get input from the user
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Введіть ціле число від 1 to 1000 як ключ шифрування (encryptorkey): ");
+        int encryptorKey = scanner.nextInt();
+        if (encryptorKey < 1){
+            System.out.println("Помилка! Введено неправильний ключ.");
+            System.out.print("Спробуйте заново.");
+            System.exit(0);
+        }
+        if (encryptorKey > 139){
+            while (encryptorKey>139){
+                encryptorKey = encryptorKey - 139;
+            }
+        }
+
+        // Set file paths
+        String inputFile = "d:/Projecttask/forencryptfile.txt";
+        String alphabetFile = "d:/Projecttask/alphabet.txt";
+
+        // Prepare data for encryption
+        PrepareEncryption prepareEncryption = new PrepareEncryption();
+        String text = prepareEncryption.readTextFromFile(inputFile);
+        //System.out.println(text);
+        String alphabet = prepareEncryption.readAlphabetFromFile(alphabetFile);
+        //System.out.println(alphabet);
+
+        // Encrypt the text and write to a new file
+        TextEncryptor textEncryptor = new TextEncryptor(encryptorKey);
+        List<String> encryptedLines = textEncryptor.encrypt(text, alphabet);
+        textEncryptor.writeEncryptedTextToFile(encryptedLines, inputFile);
+    }
+}

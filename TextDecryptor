@@ -6,7 +6,6 @@ import java.util.List;
 
 public class TextDecryptor {
     private final int encryptorKey;
-    //encryptorKey = 140 - encryptorKey;
 
     public TextDecryptor(int encryptorKey) {
         this.encryptorKey = encryptorKey;

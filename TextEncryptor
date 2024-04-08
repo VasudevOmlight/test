@@ -1,0 +1,47 @@
+import java.util.ArrayList;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.List;
+
+public class TextEncryptor {
+    private final int encryptorKey;
+
+    public TextEncryptor(int encryptorKey) {
+        this.encryptorKey = encryptorKey;
+    }
+
+    public List<String> encrypt(String text, String alphabet) {
+        List<String> encryptedLines = new ArrayList<>();
+        String[] lines = text.split("\n"); // Split text into lines
+        for (String line : lines) {
+            StringBuilder encryptedLineBuilder = new StringBuilder();
+            for (int i = 0; i < line.length(); i++) {
+                char currentChar = line.charAt(i);
+                int index = alphabet.indexOf(currentChar);
+                if (index != -1) {
+                    int newIndex = (index + encryptorKey) % alphabet.length();
+                    char newChar = alphabet.charAt(newIndex);
+                    encryptedLineBuilder.append(newChar);
+                } else {
+                    encryptedLineBuilder.append(currentChar);
+                }
+            }
+            encryptedLines.add(encryptedLineBuilder.toString());
+        }
+        return encryptedLines;
+    }
+
+    public void writeEncryptedTextToFile(List<String> encryptedLines, String inputFile) {
+        String outputFile = inputFile.replace(".txt", "_encrypted.txt");
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(outputFile))) {
+            for (String line : encryptedLines) {
+                writer.write(line);
+                writer.newLine(); // Write newline after each line
+            }
+            System.out.println("File encrypted");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}

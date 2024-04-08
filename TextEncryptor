@@ -39,7 +39,7 @@ public class TextEncryptor {
                 writer.write(line);
                 writer.newLine(); // Write newline after each line
             }
-            System.out.println("File encrypted");
+            System.out.println("Файл зашифровано");
         } catch (IOException e) {
             e.printStackTrace();
         }

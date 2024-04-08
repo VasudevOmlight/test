@@ -7,7 +7,7 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Введіть ціле число від 1 to 1000 як ключ шифрування (encryptorkey): ");
         int encryptorKey = scanner.nextInt();
-        if (encryptorKey < 1){
+        if (encryptorKey < 1 || encryptorKey > 1000 ){
             System.out.println("Помилка! Введено неправильний ключ.");
             System.out.print("Спробуйте заново.");
             System.exit(0);
@@ -33,5 +33,38 @@ public class Main {
         TextEncryptor textEncryptor = new TextEncryptor(encryptorKey);
         List<String> encryptedLines = textEncryptor.encrypt(text, alphabet);
         textEncryptor.writeEncryptedTextToFile(encryptedLines, inputFile);
+
+        System.out.println("Якщо бажаєте здійснити розшифрування зашифрованого файла, ");
+        System.out.print("то введіть ключ шифрування (якщо не бажаєте, то введіть 0): ");
+        encryptorKey = scanner.nextInt();
+        if (encryptorKey < 1 || encryptorKey > 1000 ){
+            System.out.println("Помилка! Введено неправильний ключ.");
+            System.out.print("Спробуйте заново.");
+            System.exit(0);
+        }
+        if (encryptorKey > 139){
+            while (encryptorKey>139){
+                encryptorKey = encryptorKey - 139;
+            }
+        }
+
+        encryptorKey = 140 - encryptorKey;
+        inputFile = "d:/Projecttask/forencryptfile_encrypted.txt";
+        alphabetFile = "d:/Projecttask/alphabet.txt";
+
+        // Prepare data for decryption
+        //PrepareEncryption prepareEncryption = new PrepareEncryption();
+        text = prepareEncryption.readTextFromFile(inputFile);
+        //System.out.println(text);
+        alphabet = prepareEncryption.readAlphabetFromFile(alphabetFile);
+        //System.out.println(alphabet);
+
+        // Encrypt the text and write to a new file
+        TextDecryptor textDecryptor = new TextDecryptor(encryptorKey);
+        encryptedLines = textDecryptor.encrypt(text, alphabet);
+        textDecryptor.writeEncryptedTextToFile(encryptedLines, inputFile);
+
+
+
     }
 }

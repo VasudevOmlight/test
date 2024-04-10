@@ -3,7 +3,7 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        
+
         Scanner scanner = new Scanner(System.in);
         System.out.print("Введіть ціле число від 1 to 1000 як ключ шифрування (encryptorkey): ");
         int encryptorKey = scanner.nextInt();
@@ -63,8 +63,5 @@ public class Main {
         TextDecryptor textDecryptor = new TextDecryptor(encryptorKey);
         encryptedLines = textDecryptor.encrypt(text, alphabet);
         textDecryptor.writeEncryptedTextToFile(encryptedLines, inputFile);
-
-
-
     }
 }

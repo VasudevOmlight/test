@@ -13,7 +13,7 @@ public class TextEncryptor {
 
     public List<String> encrypt(String text, String alphabet) {
         List<String> encryptedLines = new ArrayList<>();
-        String[] lines = text.split("\n"); 
+        String[] lines = text.split("\n"); // Розділення тексту на рядки
         for (String line : lines) {
             StringBuilder encryptedLineBuilder = new StringBuilder();
             for (int i = 0; i < line.length(); i++) {
@@ -37,7 +37,6 @@ public class TextEncryptor {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(outputFile))) {
             for (String line : encryptedLines) {
                 writer.write(line);
-                writer.newLine(); 
             }
             System.out.println("Файл зашифровано");
         } catch (IOException e) {

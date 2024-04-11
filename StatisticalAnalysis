@@ -1,0 +1,67 @@
+import java.util.Arrays;
+
+public class StatisticalAnalysis {
+    private int numberAllSymbols;
+    private int[] alphabetStat;
+    private int[][] alphabetRating;
+    private int biggestRating;
+    private int secondRating;
+    private int thirdRating;
+
+    public StatisticalAnalysis(String text, String alphabet) {
+        // Рахуємо, скільки усього символів у тексті
+        this.numberAllSymbols = text.length();
+
+        // Ініціюємо масив alphabetStat
+        this.alphabetStat = new int[alphabet.length()];
+
+        // Рахуємо частоту вживання кожного символа у тексті
+        for (int j = 0; j < alphabet.length(); j++) {
+            char currentAlphabetChar = alphabet.charAt(j);
+            for (int i = 0; i < text.length(); i++) {
+                //char currentChar = text.charAt(i);
+                if (currentAlphabetChar == text.charAt(i)){
+                alphabetStat[j]++;
+                }
+            }
+        }
+
+        // Рахуємо параметр частоти вживання символа
+        for (int i = 0; i < alphabetStat.length; i++) {
+            alphabetStat[i] = Math.round((float) alphabetStat[i] / numberAllSymbols * 1000);
+        }
+
+        // Ініціюємо масив alphabetRating
+        this.alphabetRating = new int[10][2];
+
+        // Сортируємо alphabetStat array і заповнюємо alphabetRating десятьма найбільшими значеннями
+        int[][] temp = new int[alphabetStat.length][2];
+        for (int i = 0; i < alphabetStat.length; i++) {
+            temp[i][0] = i;
+            temp[i][1] = alphabetStat[i];
+        }
+        Arrays.sort(temp, (a, b) -> Integer.compare(b[1], a[1]));
+        for (int i = 0; i < 10; i++) {
+            if (i < temp.length) {
+                alphabetRating[i][0] = temp[i][0];
+                alphabetRating[i][1] = temp[i][1];
+            }
+        }
+
+        // Встановлюємо три найчастіше вживаних символа
+        biggestRating = alphabetRating[0][0];
+        secondRating = alphabetRating[1][0];
+        thirdRating = alphabetRating[2][0];
+    }
+
+    public void printResults() {
+        System.out.println("Загальна кількість символів у тексті: " + numberAllSymbols);
+        System.out.println("Toп 10 символів з їхніми відносними показниками присутності:");
+        for (int i = 0; i < 10; i++) {
+            System.out.println(alphabetRating[i][0] + " - " + alphabetRating[i][1]);
+        }
+        System.out.println("Найчастіше зустрічається символ №: " + biggestRating);
+        System.out.println("Другий за кількістю символ №: " + secondRating);
+        System.out.println("Третій за кількістю символ №: " + thirdRating);
+    }
+}

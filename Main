@@ -18,18 +18,24 @@ public class Main {
             }
         }
 
-        // Set file paths
+        // Встановлюємо шляхи до файлів
         String inputFile = "d:/Projecttask/forencryptfile.txt";
         String alphabetFile = "d:/Projecttask/alphabet.txt";
 
-        // Prepare data for encryption
+        // Готуємо дані для шифрування
         PrepareEncryption prepareEncryption = new PrepareEncryption();
         String text = prepareEncryption.readTextFromFile(inputFile);
         //System.out.println(text);
         String alphabet = prepareEncryption.readAlphabetFromFile(alphabetFile);
         //System.out.println(alphabet);
 
-        // Encrypt the text and write to a new file
+         // Створюємо об'єкт StatisticalAnalysis та направляємо до нього дані
+        StatisticalAnalysis statisticalAnalysis = new StatisticalAnalysis(text, alphabet);
+
+        // Друкуємо результати
+        statisticalAnalysis.printResults();
+
+        // Зашифровка тексту і запис до нового файлу
         TextEncryptor textEncryptor = new TextEncryptor(encryptorKey);
         List<String> encryptedLines = textEncryptor.encrypt(text, alphabet);
         textEncryptor.writeEncryptedTextToFile(encryptedLines, inputFile);
@@ -52,14 +58,13 @@ public class Main {
         inputFile = "d:/Projecttask/forencryptfile_encrypted.txt";
         alphabetFile = "d:/Projecttask/alphabet.txt";
 
-        // Prepare data for decryption
-        //PrepareEncryption prepareEncryption = new PrepareEncryption();
+        
         text = prepareEncryption.readTextFromFile(inputFile);
-        //System.out.println(text);
+        
         alphabet = prepareEncryption.readAlphabetFromFile(alphabetFile);
-        //System.out.println(alphabet);
+        
 
-        // Encrypt the text and write to a new file
+        // Дешифруємо текст і записуємо у новий файл
         TextDecryptor textDecryptor = new TextDecryptor(encryptorKey);
         encryptedLines = textDecryptor.encrypt(text, alphabet);
         textDecryptor.writeEncryptedTextToFile(encryptedLines, inputFile);

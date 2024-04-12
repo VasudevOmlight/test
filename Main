@@ -2,21 +2,21 @@ import java.util.Scanner;
 import java.util.List;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args)  throws InterruptedException {
 
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Введіть ціле число від 1 to 1000 як ключ шифрування (encryptorkey): ");
+        System.out.print("Введіть ціле число від 1 to 100 як ключ шифрування (encryptorkey): ");
         int encryptorKey = scanner.nextInt();
-        if (encryptorKey < 1 || encryptorKey > 1000 ){
+        if (encryptorKey < 1 || encryptorKey > 100) {
             System.out.println("Помилка! Введено неправильний ключ.");
             System.out.print("Спробуйте заново.");
             System.exit(0);
         }
-        if (encryptorKey > 139){
-            while (encryptorKey>139){
+        /*if (encryptorKey > 139) {
+            while (encryptorKey > 139) {
                 encryptorKey = encryptorKey - 139;
             }
-        }
+        }      */
 
         // Встановлюємо шляхи до файлів
         String inputFile = "d:/Projecttask/forencryptfile.txt";
@@ -29,9 +29,8 @@ public class Main {
         String alphabet = prepareEncryption.readAlphabetFromFile(alphabetFile);
         //System.out.println(alphabet);
 
-         // Створюємо об'єкт StatisticalAnalysis та направляємо до нього дані
+        // Створюємо об'єкт StatisticalAnalysis та направляємо до нього дані
         StatisticalAnalysis statisticalAnalysis = new StatisticalAnalysis(text, alphabet);
-
         // Друкуємо результати
         statisticalAnalysis.printResults();
 
@@ -41,32 +40,91 @@ public class Main {
         textEncryptor.writeEncryptedTextToFile(encryptedLines, inputFile);
 
         System.out.println("Якщо бажаєте здійснити розшифрування зашифрованого файла, ");
-        System.out.print("то введіть ключ шифрування (якщо не бажаєте, то введіть 0): ");
+        System.out.print("то введіть ключ шифрування (якщо не маєте ключа, то для підбору ключа введіть 0): ");
         encryptorKey = scanner.nextInt();
-        if (encryptorKey < 1 || encryptorKey > 1000 ){
+        if (encryptorKey < 0 || encryptorKey > 1000) {
             System.out.println("Помилка! Введено неправильний ключ.");
             System.out.print("Спробуйте заново.");
             System.exit(0);
-        }
-        if (encryptorKey > 139){
-            while (encryptorKey>139){
-                encryptorKey = encryptorKey - 139;
+        } else {
+            if (encryptorKey != 0) {
+                if (encryptorKey > 139) {
+                    while (encryptorKey > 139) {
+                        encryptorKey = encryptorKey - 139;
+                    }
+                }
+                encryptorKey = 140 - encryptorKey;
+                inputFile = "d:/Projecttask/forencryptfile_encrypted.txt";
+                alphabetFile = "d:/Projecttask/alphabet.txt";
+
+                //PrepareEncryption prepareEncryption = new PrepareEncryption();
+                text = prepareEncryption.readTextFromFile(inputFile);
+                //System.out.println(text);
+                alphabet = prepareEncryption.readAlphabetFromFile(alphabetFile);
+                //System.out.println(alphabet);
+
+                // Дешифруємо текст і записуємо у новий файл
+                TextDecryptor textDecryptor = new TextDecryptor(encryptorKey);
+                encryptedLines = textDecryptor.encrypt(text, alphabet);
+                textDecryptor.writeEncryptedTextToFile(encryptedLines, inputFile);
+            } else {
+                System.out.println("Починаємо підбір ключа" );
+
+                // Декоративна пауза
+                for (int i = 40; i > 0; i--)
+                {
+                    System.out.print("-");
+                    Thread.sleep(50);
+                }   System.out.println("-");
+
+                inputFile = "d:/Projecttask/forencryptfile_encrypted.txt";
+                alphabetFile = "d:/Projecttask/alphabet.txt";
+                text = prepareEncryption.readTextFromFile(inputFile);
+                alphabet = prepareEncryption.readAlphabetFromFile(alphabetFile);
+
+                // Створюємо об'єкт EncryptedStatAnalysis та направляємо до нього дані
+                EncryptedStatAnalysis encryptedStatAnalysis = new EncryptedStatAnalysis(text, alphabet);
+
+                //Викликаємо результати статистичного аналізу
+
+                int[][] encRating = encryptedStatAnalysis.getEncryptedAlphabetRating();
+
+                inputFile = "d:/Projecttask/referenceFile.txt";
+                alphabetFile = "d:/Projecttask/alphabet.txt";
+                text = prepareEncryption.readTextFromFile(inputFile);
+                alphabet = prepareEncryption.readAlphabetFromFile(alphabetFile);
+
+                // Створюємо об'єкт StatisticalAnalysis та направляємо до нього дані
+                StatisticalAnalysis refStatisticalAnalysis = new StatisticalAnalysis(text, alphabet);
+
+                int[][] refRating = statisticalAnalysis.getAlphabetRating();
+
+                System.out.println("Рейтинг референсних значень " + refRating[0][0] + "-" + refRating[1][0] + "-" + refRating[2][0]);
+                System.out.println("Рейтинг зашифрованих значень " + encRating[0][0] + "-" + encRating[1][0] + "-" + encRating[2][0]);
+
+
+                //Перевірка співпадіння статистичної закономірності
+                if ((refRating[0][0] - refRating[1][0]) == (encRating[0][0] - encRating[1][0]) &&
+                        (refRating[1][0] - refRating[2][0]) == (encRating[1][0] - encRating[2][0]) &&
+                        (refRating[2][0] - refRating[3][0]) == (encRating[2][0] - encRating[3][0]))
+                {
+                    encryptorKey = 140 - (encRating[0][0] - refRating[0][0]);
+                    System.out.println("Знайдено ключ " + (140 - encryptorKey));
+                    inputFile = "d:/Projecttask/forencryptfile_encrypted.txt";
+                    alphabetFile = "d:/Projecttask/alphabet.txt";
+
+                    text = prepareEncryption.readTextFromFile(inputFile);
+                    alphabet = prepareEncryption.readAlphabetFromFile(alphabetFile);
+
+                    TextDecryptor textDecryptor = new TextDecryptor(encryptorKey);
+                    encryptedLines = textDecryptor.encrypt(text, alphabet);
+                    textDecryptor.writeEncryptedTextToFile(encryptedLines, inputFile);
+
+                    System.out.println("Метод BRUTE_FORCE виконано. Текст розшифровано.");
+                } else {
+                    System.out.println("Розшифрувати текст не вдалося.");
+                }
             }
         }
-
-        encryptorKey = 140 - encryptorKey;
-        inputFile = "d:/Projecttask/forencryptfile_encrypted.txt";
-        alphabetFile = "d:/Projecttask/alphabet.txt";
-
-        
-        text = prepareEncryption.readTextFromFile(inputFile);
-        
-        alphabet = prepareEncryption.readAlphabetFromFile(alphabetFile);
-        
-
-        // Дешифруємо текст і записуємо у новий файл
-        TextDecryptor textDecryptor = new TextDecryptor(encryptorKey);
-        encryptedLines = textDecryptor.encrypt(text, alphabet);
-        textDecryptor.writeEncryptedTextToFile(encryptedLines, inputFile);
     }
 }

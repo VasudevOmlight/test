@@ -12,11 +12,6 @@ public class Main {
             System.out.print("Спробуйте заново.");
             System.exit(0);
         }
-        /*if (encryptorKey > 139) {
-            while (encryptorKey > 139) {
-                encryptorKey = encryptorKey - 139;
-            }
-        }      */
 
         // Встановлюємо шляхи до файлів
         String inputFile = "d:/Projecttask/forencryptfile.txt";
@@ -42,17 +37,12 @@ public class Main {
         System.out.println("Якщо бажаєте здійснити розшифрування зашифрованого файла, ");
         System.out.print("то введіть ключ шифрування (якщо не маєте ключа, то для підбору ключа введіть 0): ");
         encryptorKey = scanner.nextInt();
-        if (encryptorKey < 0 || encryptorKey > 1000) {
+        if (encryptorKey < 0 || encryptorKey > 100) {
             System.out.println("Помилка! Введено неправильний ключ.");
             System.out.print("Спробуйте заново.");
             System.exit(0);
         } else {
             if (encryptorKey != 0) {
-                if (encryptorKey > 139) {
-                    while (encryptorKey > 139) {
-                        encryptorKey = encryptorKey - 139;
-                    }
-                }
                 encryptorKey = 140 - encryptorKey;
                 inputFile = "d:/Projecttask/forencryptfile_encrypted.txt";
                 alphabetFile = "d:/Projecttask/alphabet.txt";

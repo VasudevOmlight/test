@@ -1,0 +1,78 @@
+import java.util.Arrays;
+public class EncryptedStatAnalysis {
+    private int numberAllSymbols;
+    private int[] encryptedAlphabetStat;
+    private int[][] encryptedAlphabetRating;
+    private int biggestRating;
+    private int secondRating;
+    private int thirdRating;
+
+
+    public EncryptedStatAnalysis(String text, String alphabet) {
+        // Рахуємо, скільки усього символів у тексті
+        this.numberAllSymbols = text.length();
+
+        // Ініціюємо масив alphabetStat
+        this.encryptedAlphabetStat = new int[alphabet.length()];
+
+        // Рахуємо частоту вживання кожного символа у тексті
+        for (int j = 0; j < alphabet.length(); j++) {
+            char currentAlphabetChar = alphabet.charAt(j);
+            for (int i = 0; i < text.length(); i++) {
+                //char currentChar = text.charAt(i);
+                if (currentAlphabetChar == text.charAt(i)) {
+                    encryptedAlphabetStat[j]++;
+                }
+            }
+        }
+
+        // Рахуємо параметр частоти вживання символа
+        for (int i = 0; i < encryptedAlphabetStat.length; i++) {
+            encryptedAlphabetStat[i] = Math.round((float) encryptedAlphabetStat[i] / numberAllSymbols * 1000);
+        }
+
+        // Ініціюємо масив alphabetRating
+        this.encryptedAlphabetRating = new int[10][2];
+
+        // Сортируємо alphabetStat array і заповнюємо alphabetRating десятьма найбільшими значеннями
+        int[][] temp = new int[encryptedAlphabetStat.length][2];
+        for (int i = 0; i < encryptedAlphabetStat.length; i++) {
+            temp[i][0] = i;
+            temp[i][1] = encryptedAlphabetStat[i];
+        }
+        Arrays.sort(temp, (a, b) -> Integer.compare(b[1], a[1]));
+        for (int i = 0; i < 10; i++) {
+            if (i < temp.length) {
+                encryptedAlphabetRating[i][0] = temp[i][0];
+                encryptedAlphabetRating[i][1] = temp[i][1];
+            }
+        }
+        // Встановлюємо шляхи до файлів
+        String inputFile = "d:/Projecttask/referenceFile.txt";
+        String alphabetFile = "d:/Projecttask/alphabet.txt";
+
+        // Готуємо дані для аналізу
+        PrepareEncryption prepareEncryption = new PrepareEncryption();
+        text = prepareEncryption.readTextFromFile(inputFile);
+        //System.out.println(text);
+        alphabet = prepareEncryption.readAlphabetFromFile(alphabetFile);
+        //System.out.println(alphabet);
+
+        // Створюємо об'єкт StatisticalAnalysis та направляємо до нього дані
+        StatisticalAnalysis statisticalAnalysis = new StatisticalAnalysis(text, alphabet);
+
+        // Встановлюємо три найчастіше вживаних символа
+        biggestRating = encryptedAlphabetRating[0][0];
+        secondRating = encryptedAlphabetRating[1][0];
+        thirdRating = encryptedAlphabetRating[2][0];
+
+        System.out.println("Найчастіше зустрічається символ №: " + biggestRating);
+        System.out.println("Другий за кількістю символ №: " + secondRating);
+        System.out.println("Третій за кількістю символ №: " + thirdRating);
+    }
+
+        public int[][] getEncryptedAlphabetRating() {
+            return encryptedAlphabetRating;
+    }
+
+}

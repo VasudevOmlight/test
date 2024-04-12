@@ -64,4 +64,8 @@ public class StatisticalAnalysis {
         System.out.println("Другий за кількістю символ №: " + secondRating);
         System.out.println("Третій за кількістю символ №: " + thirdRating);
     }
+
+    public int[][] getAlphabetRating() {
+        return alphabetRating;
+    }
 }

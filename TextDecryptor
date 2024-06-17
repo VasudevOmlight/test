@@ -40,7 +40,7 @@ public class TextDecryptor {
             for (String line : encryptedLines) {
                 writer.write(line);
             }
-            System.out.println("Файл розшифровано");
+            System.out.println("--- Файл розшифровано ---");
         } catch (IOException e) {
             e.printStackTrace();
         }

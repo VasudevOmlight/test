@@ -38,7 +38,7 @@ public class TextEncryptor {
             for (String line : encryptedLines) {
                 writer.write(line);
             }
-            System.out.println("Файл зашифровано");
+            System.out.println("--- Файл зашифровано ---");
         } catch (IOException e) {
             e.printStackTrace();
         }

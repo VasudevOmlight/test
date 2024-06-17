@@ -5,6 +5,9 @@ public class Main {
     public static void main(String[] args)  throws InterruptedException {
 
         Scanner scanner = new Scanner(System.in);
+        System.out.println("Для здійснення шифрування текстового файла помістіть його за наступною адресою: d:/Projecttask01/forencryptfile.txt");
+        System.out.println("Текстовий файл з усіма можливими символами знаходиться за адресою: d:/Projecttask01/alphabet.txt");
+        System.out.println("Зразковий текстовий файл розташований за адресою: d:/Projecttask01/referenceFile.txt");
         System.out.print("Введіть ціле число від 1 to 100 як ключ шифрування (encryptorkey): ");
         int encryptorKey = scanner.nextInt();
         if (encryptorKey < 1 || encryptorKey > 100) {
@@ -12,10 +15,15 @@ public class Main {
             System.out.print("Спробуйте заново.");
             System.exit(0);
         }
+        /*if (encryptorKey > 139) {
+            while (encryptorKey > 139) {
+                encryptorKey = encryptorKey - 139;
+            }
+        }      */
 
         // Встановлюємо шляхи до файлів
-        String inputFile = "d:/Projecttask/forencryptfile.txt";
-        String alphabetFile = "d:/Projecttask/alphabet.txt";
+        String inputFile = "d:/Projecttask01/forencryptfile.txt";
+        String alphabetFile = "d:/Projecttask01/alphabet.txt";
 
         // Готуємо дані для шифрування
         PrepareEncryption prepareEncryption = new PrepareEncryption();
@@ -42,10 +50,15 @@ public class Main {
             System.out.print("Спробуйте заново.");
             System.exit(0);
         } else {
-            if (encryptorKey != 0) {
+            if (encryptorKey != 0) { /*
+                if (encryptorKey > 139) {
+                    while (encryptorKey > 139) {
+                        encryptorKey = encryptorKey - 139;
+                    }
+                }                  */
                 encryptorKey = 140 - encryptorKey;
-                inputFile = "d:/Projecttask/forencryptfile_encrypted.txt";
-                alphabetFile = "d:/Projecttask/alphabet.txt";
+                inputFile = "d:/Projecttask01/forencryptfile_encrypted.txt";
+                alphabetFile = "d:/Projecttask01/alphabet.txt";
 
                 //PrepareEncryption prepareEncryption = new PrepareEncryption();
                 text = prepareEncryption.readTextFromFile(inputFile);
@@ -67,8 +80,8 @@ public class Main {
                     Thread.sleep(50);
                 }   System.out.println("-");
 
-                inputFile = "d:/Projecttask/forencryptfile_encrypted.txt";
-                alphabetFile = "d:/Projecttask/alphabet.txt";
+                inputFile = "d:/Projecttask01/forencryptfile_encrypted.txt";
+                alphabetFile = "d:/Projecttask01/alphabet.txt";
                 text = prepareEncryption.readTextFromFile(inputFile);
                 alphabet = prepareEncryption.readAlphabetFromFile(alphabetFile);
 
@@ -79,8 +92,8 @@ public class Main {
 
                 int[][] encRating = encryptedStatAnalysis.getEncryptedAlphabetRating();
 
-                inputFile = "d:/Projecttask/referenceFile.txt";
-                alphabetFile = "d:/Projecttask/alphabet.txt";
+                inputFile = "d:/Projecttask01/referenceFile.txt";
+                alphabetFile = "d:/Projecttask01/alphabet.txt";
                 text = prepareEncryption.readTextFromFile(inputFile);
                 alphabet = prepareEncryption.readAlphabetFromFile(alphabetFile);
 
@@ -100,8 +113,8 @@ public class Main {
                 {
                     encryptorKey = 140 - (encRating[0][0] - refRating[0][0]);
                     System.out.println("Знайдено ключ " + (140 - encryptorKey));
-                    inputFile = "d:/Projecttask/forencryptfile_encrypted.txt";
-                    alphabetFile = "d:/Projecttask/alphabet.txt";
+                    inputFile = "d:/Projecttask01/forencryptfile_encrypted.txt";
+                    alphabetFile = "d:/Projecttask01/alphabet.txt";
 
                     text = prepareEncryption.readTextFromFile(inputFile);
                     alphabet = prepareEncryption.readAlphabetFromFile(alphabetFile);
